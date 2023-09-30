@@ -62,7 +62,6 @@ const FormJobEdit = () => {
     }
   }, [fetchStatus, setFetchStatus]);
 
-  console.log(input);
   return (
     <form className="m-5" onSubmit={handleSubmit}>
       <div className="space-y-12">

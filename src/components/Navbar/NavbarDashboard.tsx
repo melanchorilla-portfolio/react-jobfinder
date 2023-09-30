@@ -1,7 +1,19 @@
 import { Dropdown, Navbar, Avatar } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
+
+const user = JSON.parse(localStorage.getItem("user") || "");
 
 const NavbarDashboard = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+
   return (
     <Navbar fluid rounded>
       <Navbar.Brand>
@@ -18,22 +30,21 @@ const NavbarDashboard = () => {
           label={
             <Avatar
               alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+              img={user.image_url}
               rounded
             />
           }
         >
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
+            <span className="block text-sm">{user.name}</span>
             <span className="block truncate text-sm font-medium">
-              name@flowbite.com
+              {user.email}
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
+          <Dropdown.Item><Link to="/dashboard/profile">Profile</Link></Dropdown.Item>
+          <Dropdown.Item><Link to="/dashboard/change-password">Change password</Link></Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>

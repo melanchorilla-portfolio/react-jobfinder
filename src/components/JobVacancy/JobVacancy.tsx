@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Button } from "flowbite-react";
+// import { Button } from "flowbite-react";
 import { Pagination } from "flowbite-react";
 import { BiTimeFive, BiSolidEditLocation } from "react-icons/bi";
 import { BsCash, BsCheckLg, BsXLg } from "react-icons/bs";
@@ -10,6 +10,7 @@ const JobVacancyList = () => {
   const [fetchData, setFetchData] = useState<any[]>([]);
   const [fetchStatus, setFetchStatus] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (fetchStatus === true) {
@@ -28,12 +29,19 @@ const JobVacancyList = () => {
     }
   }, [fetchStatus, setFetchStatus]);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    let value = event.target.value;
+
+    setSearch(value)
+  }
+
+
   return (
     <div className="container min-h-screen">
       <div className="h-[40vh] w-full bg-slate-300 flex justify-center items-center">
         <form className="flex gap-x-5">
-          <input type="text" className="rounded-md w-64 max-w-md" />
-          <Button>Search</Button>
+          <input type="text" className="rounded-md w-64 max-w-md" onChange={handleChange} value={search} placeholder="Search..." />
+          {/* <Button>Search</Button> */}
         </form>
       </div>
       <div className="mt-5">
@@ -42,7 +50,19 @@ const JobVacancyList = () => {
         </h2>
         <div className="container mx-auto px-5 sm:flex sm:flex-wrap sm:gap-6 sm:justify-evenly">
           {data.length ? (
-            data.map((res, index) => {
+            data.filter((searchParams) => {
+              if(searchParams.title.toLowerCase().includes(search.toLowerCase())) {
+                return true
+              }
+              if(searchParams.company_city.toLowerCase().includes(search.toLowerCase())) {
+                return true
+              }
+              if(searchParams.company_name.toLowerCase().includes(search.toLowerCase())) {
+                return true
+              }
+              return false
+            })
+            .map((res, index) => {
               return (
                 <div
                   className="rounded-md shadow-lg overflow-hidde mb-10 sm:mb-0 sm:w-64 md:w-80 lg:w-72 p-5"

@@ -1,5 +1,7 @@
 import { Button, Navbar } from "flowbite-react";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+
 
 const NavbarHome = (): JSX.Element => {
   return (
@@ -12,9 +14,15 @@ const NavbarHome = (): JSX.Element => {
         </Link>
       </Navbar.Brand>
       <div className="flex md:order-2">
-        <Link to="/login">
-          <Button>Login</Button>
-        </Link>
+      {Cookies.get("token") !== undefined ? (
+          <Link to="/dashboard">
+            <Button>Dashboard</Button>
+          </Link>
+        ) : (
+          <Link to="/login">
+            <Button>Login</Button>
+          </Link>
+        )}
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
