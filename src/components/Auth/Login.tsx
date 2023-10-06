@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Card, Label, TextInput } from "flowbite-react";
+import Swal from "sweetalert2";
 
 const Login = () => {
   let navigate = useNavigate();
@@ -24,6 +25,11 @@ const Login = () => {
         let { token, user } = res.data;
         Cookies.set("token", token);
         localStorage.setItem('user', JSON.stringify(user))
+        Swal.fire(
+          'Congratulations!',
+          'You logged in!',
+          'success'
+        )
         navigate("/dashboard");
       })
       .catch((error) => {
